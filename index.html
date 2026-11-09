@@ -9,6 +9,23 @@
 <meta property="og:title" content="GLAMDOG 글램독">
 <meta property="og:description" content="강아지가 주인공인 여행 🐾">
 <meta property="og:image" content="hero-yangyang.jpg">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LXEJG5XX2G"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){ dataLayer.push(arguments); }
+gtag('js', new Date());
+(function(){
+  var SRC = { ig: ['instagram', 'bio'], qr: ['offline', 'qr'] };
+  var f = new URLSearchParams(location.search).get('f'), cfg = {};
+  if (f && SRC[f]) {
+    var u = new URL(location.origin + location.pathname);
+    u.searchParams.set('utm_source', SRC[f][0]); u.searchParams.set('utm_medium', SRC[f][1]); u.searchParams.set('utm_campaign', 'link_page');
+    cfg.page_location = u.toString();
+    history.replaceState(null, '', location.pathname);
+  }
+  gtag('config', 'G-LXEJG5XX2G', cfg);
+})();
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
@@ -207,6 +224,7 @@ footer .nap{width:190px;margin:0 auto -6px}
 footer .wm{height:38px;margin:14px auto 0}
 footer p{font-size:15px;margin-top:8px;color:var(--muted)}
 footer small{display:block;margin-top:18px;font-size:11.5px;color:#aaa39a}
+footer small a{text-decoration:underline;text-underline-offset:2px}
 
 .rv{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:var(--d,0s)}
 .rv.in{opacity:1;transform:none}
@@ -291,15 +309,15 @@ const num = n => Number(n).toLocaleString('ko-KR');
 function feat(f, icon){
   if (f.status === 'hidden') return '';
   const right = f.status === 'open' ? `<a class="go" href="${esc(f.url)}">바로가기</a>` : `<em><i class="pdot"></i>준비 중</em>`;
-  return `<li ${f.status === 'open' ? '' : 'data-soon'}><span class="ic">${I[icon]}</span><div><b>${esc(f.title)}</b><span>${esc(f.desc)}</span></div>${right}</li>`;
+  return `<li ${f.status === 'open' ? '' : 'data-soon'} data-track="${icon === 'cal' ? 'booking' : 'member'}|${esc(f.title)}"><span class="ic">${I[icon]}</span><div><b>${esc(f.title)}</b><span>${esc(f.desc)}</span></div>${right}</li>`;
 }
 
 function render(){
   const p = PAGE, B = p.branches, ig = p.instagram;
   const anySoon = p.booking.status === 'soon' || p.member.status === 'soon';
   const loginBtn = p.member.status === 'hidden' ? '' : p.member.status === 'open'
-    ? `<a class="login" href="${esc(p.member.url)}">로그인</a>`
-    : `<button class="login" data-soon><i class="pdot"></i>로그인 <small>준비 중</small></button>`;
+    ? `<a class="login" data-track="login|로그인" href="${esc(p.member.url)}">로그인</a>`
+    : `<button class="login" data-soon data-track="login|로그인"><i class="pdot"></i>로그인 <small>준비 중</small></button>`;
   const mq = `<span><b class="serif it">GLAMDOG</b><i class="star">✦</i>강아지가 주인공인 여행<i class="star">✦</i>${B.map(b=>esc(b.name)).join(' · ')}<i class="star">✦</i></span>`;
   const badge = `<svg viewBox="0 0 100 100"><defs><path id="c" d="M50,50 m-40,0 a40,40 0 1,1 80,0 a40,40 0 1,1 -80,0"/></defs><text font-family="Pretendard Variable, sans-serif" font-size="10" font-weight="700" fill="#3B5A3C" textLength="248" lengthAdjust="spacing"><textPath href="#c" textLength="248" lengthAdjust="spacing">${esc(p.badgeText)}</textPath></text></svg>`;
 
@@ -337,7 +355,7 @@ function render(){
       <p class="kicker serif it">${anySoon ? 'Opening soon' : 'Members'}</p>
       <h2>${p.soonTitle.map(esc).join('<br>')}</h2>
       <ul class="feat">${feat(p.booking,'cal')}${feat(p.member,'gift')}</ul>
-      ${anySoon && p.notify.url ? `<a class="kakao" href="${esc(p.notify.url)}" target="_blank" rel="noopener">${I.kakao}${esc(p.notify.label)}</a>` : ''}
+      ${anySoon && p.notify.url ? `<a class="kakao" data-track="notify|오픈 알림 받기" href="${esc(p.notify.url)}" target="_blank" rel="noopener">${I.kakao}${esc(p.notify.label)}</a>` : ''}
     </div></div>
   </section>`}
 
@@ -347,7 +365,7 @@ function render(){
       ${B.map((b,i)=>`
       <article class="stay rv" style="--d:${(i*0.08).toFixed(2)}s">
         <div class="ph"><img src="${esc(b.card)}" alt="글램독 ${esc(b.name)}점" loading="lazy"></div>
-        <a class="main" href="${esc(b.naver || b.url)}" target="_blank" rel="noopener">
+        <a class="main" data-track="branch|${esc(b.name)}" href="${esc(b.naver || b.url)}" target="_blank" rel="noopener">
           <span class="no">${pad(i+1)}<small>${esc(b.type)}</small></span>
           <div><span class="kick">${esc(b.kick)}</span><h3>${esc(b.name)}</h3><p>${esc(b.tags)}</p><span class="more">${b.naver ? '<span class="n">N</span>네이버 플레이스에서 보기' : '지점 자세히 보기'} →</span></div>
         </a>
@@ -361,26 +379,26 @@ function render(){
     <div class="ig-card rv">
       <img class="ig-peek" src="${esc(ig.peek)}" alt="">
       <div class="ig-top">
-        <a class="ring" href="${esc(ig.url)}" target="_blank" rel="noopener"><img src="${esc(ig.avatar)}" alt="${esc(ig.handle)}"></a>
+        <a class="ring" data-track="instagram|프로필 사진" href="${esc(ig.url)}" target="_blank" rel="noopener"><img src="${esc(ig.avatar)}" alt="${esc(ig.handle)}"></a>
         <div class="ig-id"><b>${esc(ig.name)}</b><span>${esc(ig.category)}</span>
           <div class="stats"><span>게시물 <strong data-count="${ig.stats.posts}">0</strong></span><span>팔로워 <strong data-count="${ig.stats.followers}">0</strong></span></div>
         </div>
       </div>
       <p class="bio">${esc(ig.bio)}</p>
-      <div class="grid">${ig.posts.map((q,i)=>`<a class="post rv" style="--d:${(i*0.06).toFixed(2)}s" href="${esc(q.url)}" target="_blank" rel="noopener"><img src="${esc(q.img)}" alt="" loading="lazy">${q.reel?`<span class="reel">${I.reel}</span>`:''}</a>`).join('')}</div>
-      <a class="follow" href="${esc(ig.url)}" target="_blank" rel="noopener">${I.insta}인스타그램 팔로우하기</a>
+      <div class="grid">${ig.posts.map((q,i)=>`<a class="post rv" data-track="instagram_post|게시물 ${i+1}" style="--d:${(i*0.06).toFixed(2)}s" href="${esc(q.url)}" target="_blank" rel="noopener"><img src="${esc(q.img)}" alt="" loading="lazy">${q.reel?`<span class="reel">${I.reel}</span>`:''}</a>`).join('')}</div>
+      <a class="follow" data-track="instagram|팔로우하기" href="${esc(ig.url)}" target="_blank" rel="noopener">${I.insta}인스타그램 팔로우하기</a>
     </div>
   </section>
 
   <section class="links">
-    ${p.links.map((l,i)=>`<a class="lk rv" style="--d:${(i*0.06).toFixed(2)}s" href="${esc(l.url)}"${tgt(l.url)}><span class="ic">${I[l.icon]||''}</span><div><b>${esc(l.label)}</b><span>${esc(l.sub)}</span></div><span class="ar">${I.arrow}</span></a>`).join('')}
+    ${p.links.map((l,i)=>`<a class="lk rv" data-track="link|${esc(l.label)}" style="--d:${(i*0.06).toFixed(2)}s" href="${esc(l.url)}"${tgt(l.url)}><span class="ic">${I[l.icon]||''}</span><div><b>${esc(l.label)}</b><span>${esc(l.sub)}</span></div><span class="ar">${I.arrow}</span></a>`).join('')}
   </section>
 
   <footer class="rv">
     <img class="nap" src="${esc(p.footer.mascot)}" alt="">
     <img class="wm" src="${esc(p.wordmark)}" alt="GLAMDOG">
     <p>${esc(p.footer.line)}</p>
-    <small>© GLAMDOG</small>
+    <small>© GLAMDOG · <a href="https://glamdog.co.kr/privacy" target="_blank" rel="noopener" data-track="link|개인정보처리방침">개인정보처리방침</a></small>
   </footer>`;
 
   document.querySelectorAll('[data-soon]').forEach(el => el.addEventListener('click', () => toast(p.soonMessage)));
@@ -440,6 +458,13 @@ function initReveal(){
 
 let tt;
 function toast(m){ const t = document.getElementById('toast'); t.textContent = m; t.classList.add('show'); clearTimeout(tt); tt = setTimeout(()=>t.classList.remove('show'), 2600); }
+
+/* 누른 것 기록: 어느 칸(type)의 무엇(label)을 눌렀는지 GA4 이벤트 link_click 으로 보낸다 */
+document.addEventListener('click', function(e){
+  var el = e.target.closest('[data-track]'); if (!el || typeof gtag !== 'function') return;
+  var parts = el.getAttribute('data-track').split('|');
+  gtag('event', 'link_click', { link_type: parts[0], link_label: parts[1] || '', link_url: el.getAttribute('href') || '', transport_type: 'beacon' });
+}, true);
 
 render();
 </script>
