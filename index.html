@@ -160,7 +160,8 @@ img{display:block}
 .stay .kick{display:inline-block;font-size:12px;font-weight:600;padding:5px 10px;border-radius:999px;margin-bottom:10px;background:rgba(255,255,255,.16);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.25)}
 .stay h3{font-size:34px;font-weight:780;letter-spacing:-.04em;line-height:1.05}
 .stay p{font-size:13px;opacity:.85;margin-top:7px}
-.stay .more{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:13px;font-weight:650}
+.stay .more{display:inline-flex;align-items:center;gap:7px;margin-top:14px;font-size:13px;font-weight:650}
+.stay .more .n{width:18px;height:18px;border-radius:5px;background:#03C75A;display:grid;place-items:center;font-size:11px;font-weight:900;color:#fff}
 .naver{position:absolute;z-index:3;top:16px;right:16px;display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:6px 11px 6px 7px;font-size:12px;font-weight:650;color:#fff;background:rgba(255,255,255,.16);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.25)}
 .naver .n{width:18px;height:18px;border-radius:5px;background:#03C75A;display:grid;place-items:center;font-size:11px;font-weight:900;color:#fff}
 .dots{display:flex;justify-content:center;gap:6px}
@@ -346,11 +347,10 @@ function render(){
       ${B.map((b,i)=>`
       <article class="stay rv" style="--d:${(i*0.08).toFixed(2)}s">
         <div class="ph"><img src="${esc(b.card)}" alt="글램독 ${esc(b.name)}점" loading="lazy"></div>
-        <a class="main" href="${esc(b.url)}"${tgt(b.url)}>
+        <a class="main" href="${esc(b.naver || b.url)}" target="_blank" rel="noopener">
           <span class="no">${pad(i+1)}<small>${esc(b.type)}</small></span>
-          <div><span class="kick">${esc(b.kick)}</span><h3>${esc(b.name)}</h3><p>${esc(b.tags)}</p><span class="more">지점 자세히 보기 →</span></div>
+          <div><span class="kick">${esc(b.kick)}</span><h3>${esc(b.name)}</h3><p>${esc(b.tags)}</p><span class="more">${b.naver ? '<span class="n">N</span>네이버 플레이스에서 보기' : '지점 자세히 보기'} →</span></div>
         </a>
-        ${b.naver ? `<a class="naver" href="${esc(b.naver)}" target="_blank" rel="noopener"><span class="n">N</span>리뷰</a>` : ''}
       </article>`).join('')}
     </div>
     <div class="dots" id="dots">${B.map((_,i)=>`<i class="${i===0?'on':''}"></i>`).join('')}</div>
